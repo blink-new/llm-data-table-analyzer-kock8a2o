@@ -37,7 +37,7 @@ class ExternalDbService {
       const dbConnection = {
         host: conn.host,
         port: conn.port,
-        database: (conn as any).database_name || conn.database,
+        database: conn.database, // Use the correct field name
         username: conn.username,
         password: conn.password,
         ssl_mode: conn.ssl_mode

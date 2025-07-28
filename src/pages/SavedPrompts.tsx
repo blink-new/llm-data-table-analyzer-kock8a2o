@@ -110,11 +110,18 @@ const SavedPrompts: React.FC = () => {
           const firstConnection = connectionsData[0].id
           setSelectedConnection(firstConnection)
           
+          console.log('Using connection:', firstConnection, connectionsData[0])
+          
           // Initialize schema in external database
-          await externalDb.initializeSchema(firstConnection)
+          console.log('Initializing schema...')
+          const schemaResult = await externalDb.initializeSchema(firstConnection)
+          console.log('Schema initialization result:', schemaResult)
           
           // Load saved prompts from external PostgreSQL database
+          console.log('Loading saved prompts...')
           const prompts = await externalDb.getSavedPrompts(firstConnection, user.id)
+          console.log('Loaded prompts:', prompts)
+          
           setSavedPrompts(prompts.map((p: any) => ({
             ...p,
             createdAt: new Date(p.created_at),
@@ -189,7 +196,11 @@ const SavedPrompts: React.FC = () => {
           null
       }
 
-      await externalDb.createSavedPrompt(selectedConnection, prompt)
+      console.log('Creating prompt:', prompt)
+      console.log('Using connection:', selectedConnection)
+      
+      const createResult = await externalDb.createSavedPrompt(selectedConnection, prompt)
+      console.log('Create result:', createResult)
       
       // Reload prompts from external database
       const prompts = await externalDb.getSavedPrompts(selectedConnection, user.id)
